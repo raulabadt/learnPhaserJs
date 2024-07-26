@@ -45,7 +45,7 @@ function preload(){
     this.load.spritesheet(
         'mario',
         'assets/entities/mario.png',
-        {frameWidth:14} //es lo que ocupa cada uno de los marios //tambien tenemos frameHeight
+        { frameWidth: 18, frameHeight: 16 } //es lo que ocupa cada uno de los marios //tambien tenemos frameHeight
     )
 
 } //1. en ejecutar
@@ -79,6 +79,20 @@ function create (){
         //cuantas veces se ejecuta la animacion asi es infinito, pero si pones 1,2,3 es las veces que se repetira
         repeat: -1
     })
+
+    this.anims.create({
+        //le damos una key unica 
+        key: 'mario-idle',
+        frames: [{key:'mario',frame:0}]
+        
+    })
+    this.anims.create({
+        //le damos una key unica 
+        key: 'mario-jump',
+        frames: [{key:'mario',frame:5}]
+        
+    })
+  
     //movimiento del personaje
     //creamos las teclas
     //metodo para poder visualizar las teclas en el update
@@ -96,12 +110,26 @@ function update (){
         this.mario.anims.play('mario-walk',true)
         //movemos mario en el eje x-2
         this.mario.x -= 2
+        //aqui le decimos a mario que gire y se mueva a la izquierda    
+        this.mario.flipX = true
 
     } else if(this.keys.right.isDown){
         this.mario.anims.play('mario-walk',true)
         //movemos mario en el eje x+2
         this.mario.x += 2
+        //aqui le decimos a mario que gire y se mueva a la derecha
+        this.mario.flipX = false
        
+    }else{
+
+        //paramos al mario recogiendo la animacion de parado
+        this.mario.anims.play('mario-idle',true)
+    }
+
+    if(this.keys.up.isDown){
+        //No tenemos gravedad pero sin gravedad vemos que se mueve en punto de las y
+        this.mario.y -= 5
+        this.mario.anims.play('mario-jump',true)
     }
    
 } //3.continuamente
